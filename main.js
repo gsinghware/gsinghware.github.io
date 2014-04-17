@@ -52,8 +52,36 @@ function init () {
 	// In Three.js the objects that are being drawn on the screen 
 	// are called meshes.
 	var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-	cube.position.set(0,15,0);
+	cube.position.set(0,37,0);
 	scene.add(cube);
+	/*
+	var materialArray = [
+		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_right.jpg' ) } ),
+		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_top.jpg' ) } ),
+		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_front.jpg' ) } ),
+		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_back.jpg' ) } ),
+		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_bottom.jpg' ) } ),
+		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_left.jpg' ) } )
+	];
+
+	var DiceBlue = new THREE.Mesh(cube, new THREE.MeshFaceMaterial(materialArray));
+	scene.add( DiceBlue );
+	*/
+	/*
+	var materials = [
+	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_left.jpg') } ),
+	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_right.jpg') } ),
+	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_top.jpg') } ),
+	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_bottom.jpg') } ),
+	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_front.jpg') } ),
+	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_back.jpg') } ) 
+	];
+
+	var cubeMesh = new THREE.Mesh(cube, new THREE.MeshFaceMaterial(materials));
+	cubeMesh.castShadow = true;
+	cubeMesh.receiveShadow = true;
+	scene.add(cubeMesh);
+*/
 
 	// "To render something, first we need to add the camera to the scene,
 	// so the renderer knows from which point of view it should render stuff."
@@ -63,8 +91,8 @@ function init () {
 	// objects created in Three.js have their position set in the 
 	// middle of the scene (x: 0, y: 0, z: 0) by default.
 	// we have to move the camera back and up a little.
-	camera.position.y = 10;
-	camera.position.z = 50;
+	camera.position.y = 70;
+	camera.position.z = 400;
 
 	// Controls
 	controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -74,12 +102,12 @@ function init () {
 	
 	// camera looks at the cube
 	camera.lookAt(cube.position);
-	/*
+	
 	var skyboxGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
 	var skyboxMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.BackSide });
 	var skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
 	scene.add(skybox);
-	*/
+	
 	// lighting for the scene
     var pointLight = new THREE.PointLight("white");
 	pointLight.position.set(0, 300, 200);
@@ -103,14 +131,13 @@ function init () {
 	loader.load( '1865_Bookcase.dae', function ( collada ) {
 		var dae = collada.scene;
 	    var skin = collada.skins[0];
-		dae.position.set(-10,0,85);	//x,z,y- if you think in blender dimensions ;)
+		dae.position.set(-10,90,85);	//x,z,y- if you think in blender dimensions ;)
 		dae.scale.set(70,70,70);
 		scene.add(dae);
 	});
 
 	renderer.render(scene, camera);
 }
-
 
 // Renders the scene and updates the render as needed.
 function animate() {
