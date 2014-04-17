@@ -54,7 +54,13 @@ function init () {
 	var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 	cube.position.set(0,37,0);
 	scene.add(cube);
-	/*
+
+
+
+//	I think this is where is error is being generated from.
+	
+	
+
 	var materialArray = [
 		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_right.jpg' ) } ),
 		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_top.jpg' ) } ),
@@ -64,9 +70,11 @@ function init () {
 		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_left.jpg' ) } )
 	];
 
-	var DiceBlue = new THREE.Mesh(cube, new THREE.MeshFaceMaterial(materialArray));
-	scene.add( DiceBlue );
-	*/
+	var cubeMesh = new THREE.Mesh(cube, new THREE.MeshFaceMaterial(materialArray));
+	scene.add( cubeMesh );
+	
+
+
 	/*
 	var materials = [
 	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_left.jpg') } ),
