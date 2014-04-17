@@ -52,7 +52,7 @@ function init () {
 	// In Three.js the objects that are being drawn on the screen 
 	// are called meshes.
 	var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-	 
+	cube.position.set(0,15,0);
 	scene.add(cube);
 
 	// "To render something, first we need to add the camera to the scene,
@@ -83,6 +83,18 @@ function init () {
 	// lighting for the scene
     var pointLight = new THREE.PointLight("white");
 	pointLight.position.set(0, 300, 200);
+	scene.add(pointLight);
+
+	pointLight = new THREE.PointLight("white");
+	pointLight.position.set(0, -300, -200);
+	scene.add(pointLight);
+
+	pointLight = new THREE.PointLight("white");
+	pointLight.position.set(200, 300, 0);
+	scene.add(pointLight);
+
+	pointLight = new THREE.PointLight("white");
+	pointLight.position.set(200, -300, 0);
 	scene.add(pointLight);
 
 	var loader = new THREE.ColladaLoader();
