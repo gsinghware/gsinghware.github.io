@@ -58,9 +58,7 @@ function init () {
 
 
 //	I think this is where is error is being generated from.
-	
-	
-/*
+	/*
 	var materialArray = [
 		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_right.jpg' ) } ),
 		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_top.jpg' ) } ),
@@ -73,8 +71,6 @@ function init () {
 	var cubeMesh = new THREE.Mesh(cube, new THREE.MeshFaceMaterial(materialArray));
 	scene.add( cubeMesh );
 	*/
-
-
 	/*
 	var materials = [
 	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_left.jpg') } ),
@@ -103,7 +99,13 @@ function init () {
 	camera.position.z = 400;
 
 	// Controls
-	controls = new THREE.OrbitControls(camera, renderer.domElement);
+	//controls = new THREE.OrbitControls(camera, renderer.domElement);
+	
+	/*controls = new THREE.FirstPersonControls( camera );
+	controls.movementSpeed = 1000;
+	controls.lookSpeed = 0.125;
+	controls.lookVertical = true;
+	*/
 
 	// add the camera to the scene and render the scene using this camera. 
 	scene.add(camera);
@@ -145,12 +147,67 @@ function init () {
 	});
 
 	renderer.render(scene, camera);
+
 }
 
 // Renders the scene and updates the render as needed.
 function animate() {
 	requestAnimationFrame(animate);
 	renderer.render(scene, camera);
-    controls.update();
+    //controls.update();
+    cam_update();
 }
+
+
+function cam_update () {
+	var keyboard = new THREEx.KeyboardState();
+	var clock = new THREE.Clock();
+	var delta = clock.getDelta(); // seconds.
+	
+	var moveDistance = 200 * delta; // 200 pixels per second
+	var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+
+	// local transformations
+
+	// move forwards/backwards/left/right
+	if ( keyboard.pressed("W") )
+		camera.translateZ( -moveDistance );
+	if ( keyboard.pressed("S") )
+		camera.translateZ(  moveDistance );
+	if ( keyboard.pressed("Q") )
+		camera.translateX( -moveDistance );
+	if ( keyboard.pressed("E") )
+		camera.translateX(  moveDistance );	
+
+	/*
+	// rotate left/right/up/down
+	var rotation_matrix = new THREE.Matrix4().identity();
+	if ( keyboard.pressed("A") )
+		MovingCube.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+	if ( keyboard.pressed("D") )
+		MovingCube.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+	if ( keyboard.pressed("R") )
+		MovingCube.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
+	if ( keyboard.pressed("F") )
+		MovingCube.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+
+	if ( keyboard.pressed("Z") )
+	{
+		MovingCube.position.set(0,25.1,0);
+		MovingCube.rotation.set(0,0,0);
+	}
+	*/
+	var relativeCameraOffset = new THREE.Vector3(0,50,200);
+
+	var cameraOffset = relativeCameraOffset.applyMatrix4( camera.matrixWorld );
+
+	camera.position.x = cameraOffset.x;
+	camera.position.y = cameraOffset.y;
+	camera.position.z = cameraOffset.z;
+	camera.lookAt( camera.position );
+}
+
+
+
+
 
