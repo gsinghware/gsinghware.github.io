@@ -60,7 +60,7 @@ function init () {
 //	I think this is where is error is being generated from.
 	
 	
-
+/*
 	var materialArray = [
 		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_right.jpg' ) } ),
 		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_top.jpg' ) } ),
@@ -72,7 +72,7 @@ function init () {
 
 	var cubeMesh = new THREE.Mesh(cube, new THREE.MeshFaceMaterial(materialArray));
 	scene.add( cubeMesh );
-	
+	*/
 
 
 	/*
