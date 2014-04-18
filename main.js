@@ -93,9 +93,8 @@ function init () {
 	// objects created in Three.js have their position set in the 
 	// middle of the scene (x: 0, y: 0, z: 0) by default.
 	// we have to move the camera back and up a little.
-	camera.position.y = 50;
-	camera.position.z = 50;
-	camera.position.x = 0;
+	camera.position.set(0,90,250);
+	camera.rotation.set(0,0,0);
 
 	// Controls
 	//controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -109,8 +108,8 @@ function init () {
 	scene.add(camera);
 	
 	// camera looks at the cube
-	camera.lookAt(scene.position);
-
+	camera.lookAt(camera.position);
+	
 	THREEx.WindowResize(renderer, camera);
 	THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
 	
@@ -176,7 +175,6 @@ function cam_update () {
 		camera.translateX( -moveDistance );
 	if ( keyboard.pressed("E") )
 		camera.translateX(  moveDistance );	
-
 	
 	// rotate left/right/up/down
 	var rotation_matrix = new THREE.Matrix4().identity();
@@ -191,7 +189,7 @@ function cam_update () {
 
 	if ( keyboard.pressed("Z") )
 	{
-		camera.position.set(0,25.1,0);
+		camera.position.set(0,100,0);
 		camera.rotation.set(0,0,0);
 	}
 	/*
