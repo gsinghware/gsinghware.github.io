@@ -1,10 +1,11 @@
+var clock = new THREE.Clock();
+var keyboard = new THREEx.KeyboardState();
+var renderer, scene, camera, controls;
+
 init();
 animate();
 
-var renderer, scene, camera, controls;
-
 function init () {
-	
 	// width and height of the window
 	var width = window.innerWidth;
 	var height = window.innerHeight;
@@ -55,10 +56,7 @@ function init () {
 	cube.position.set(0,37,0);
 	scene.add(cube);
 
-
-
-//	I think this is where is error is being generated from.
-	/*
+/*
 	var materialArray = [
 		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_right.jpg' ) } ),
 		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_top.jpg' ) } ),
@@ -95,23 +93,26 @@ function init () {
 	// objects created in Three.js have their position set in the 
 	// middle of the scene (x: 0, y: 0, z: 0) by default.
 	// we have to move the camera back and up a little.
-	camera.position.y = 70;
-	camera.position.z = 400;
+	camera.position.y = 50;
+	camera.position.z = 50;
+	camera.position.x = 0;
 
 	// Controls
-	controls = new THREE.OrbitControls(camera, renderer.domElement);
-	
-	/*controls = new THREE.FirstPersonControls( camera );
+	//controls = new THREE.OrbitControls(camera, renderer.domElement);
+	/*
+	controls = new THREE.FirstPersonControls( camera );
 	controls.movementSpeed = 1000;
 	controls.lookSpeed = 0.125;
 	controls.lookVertical = true;
 	*/
-
 	// add the camera to the scene and render the scene using this camera. 
 	scene.add(camera);
 	
 	// camera looks at the cube
-	camera.lookAt(cube.position);
+	camera.lookAt(scene.position);
+
+	THREEx.WindowResize(renderer, camera);
+	THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
 	
 	var skyboxGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
 	var skyboxMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.BackSide });
@@ -152,8 +153,61 @@ function init () {
 
 // Renders the scene and updates the render as needed.
 function animate() {
+	var clock = new THREE.Clock();
 	requestAnimationFrame(animate);
 	renderer.render(scene, camera);
-    controls.update();
-    
+    //controls.update();
+    cam_update();
 }
+
+function cam_update () {
+	var delta = clock.getDelta(); // seconds.
+	var moveDistance = 200 * delta; // 200 pixels per second
+	var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+
+	// local transformations
+
+	// move forwards/backwards/left/right
+	if ( keyboard.pressed("W") )
+		camera.translateZ( -moveDistance );
+	if ( keyboard.pressed("S") )
+		camera.translateZ(  moveDistance );
+	if ( keyboard.pressed("Q") )
+		camera.translateX( -moveDistance );
+	if ( keyboard.pressed("E") )
+		camera.translateX(  moveDistance );	
+
+	
+	// rotate left/right/up/down
+	var rotation_matrix = new THREE.Matrix4().identity();
+	if ( keyboard.pressed("A") )
+		camera.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+	if ( keyboard.pressed("D") )
+		camera.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+	if ( keyboard.pressed("R") )
+		camera.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
+	if ( keyboard.pressed("F") )
+		camera.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+
+	if ( keyboard.pressed("Z") )
+	{
+		camera.position.set(0,25.1,0);
+		camera.rotation.set(0,0,0);
+	}
+	/*
+	var relativeCameraOffset = new THREE.Vector3(0,50,200);
+
+	var cameraOffset = relativeCameraOffset.applyMatrix4( camera.matrixWorld );
+
+	camera.position.x = cameraOffset.x;
+	camera.position.y = cameraOffset.y;
+	camera.position.z = cameraOffset.z;
+	camera.lookAt( camera.position );*/
+}
+
+
+
+
+
+
+
