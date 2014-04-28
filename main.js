@@ -1,6 +1,8 @@
 var clock = new THREE.Clock();
 var keyboard = new THREEx.KeyboardState();
 var renderer, scene, camera, controls;
+var objects = [];
+var projector = new THREE.Projector();
 
 init();
 animate();
@@ -43,33 +45,30 @@ function init () {
 	var axes = new THREE.AxisHelper(200);
 	scene.add(axes);
 
+	var cubes = new THREE.Geometry();
+
 	// cubegeometry width, height and depth is 100
 	var cubeGeometry = new THREE.CubeGeometry(7.625*2,11*2,2.75*2);
 
 	// the material of the cube is Lambert because of the lighting use
 	// later in this program, and the color of the cube is black.
-	var cubeMaterial = new THREE.MeshLambertMaterial({ color: "red" });
+	
+	// var cubeMaterial = new THREE.MeshLambertMaterial({ color: "red" });
 
 	// In Three.js the objects that are being drawn on the screen 
 	// are called meshes.
-	var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-	cube.position.set(0,37,0);
-	scene.add(cube);
 
-/*
-	var materialArray = [
-		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_right.jpg' ) } ),
-		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_top.jpg' ) } ),
-		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_front.jpg' ) } ),
-		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_back.jpg' ) } ),
-		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_bottom.jpg' ) } ),
-		new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/cereal_left.jpg' ) } )
-	];
+	var cube = new THREE.Mesh(cubeGeometry);
+	
+	// cube.position.set(0,37,0);
+	
+	for (var i = 0; i < 3; i++) {
+		for (var j = 0; j < 60; j+=20) {
+			cube.position.set(j,37,-i*7);
+			THREE.GeometryUtils.merge( cubes, cube );
+		}
+	}
 
-	var cubeMesh = new THREE.Mesh(cube, new THREE.MeshFaceMaterial(materialArray));
-	scene.add( cubeMesh );
-	*/
-	/*
 	var materials = [
 	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_left.jpg') } ),
 	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_right.jpg') } ),
@@ -79,11 +78,28 @@ function init () {
 	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_back.jpg') } ) 
 	];
 
-	var cubeMesh = new THREE.Mesh(cube, new THREE.MeshFaceMaterial(materials));
+	var cubeMesh = new THREE.Mesh(cubes, new THREE.MeshFaceMaterial(materials));
 	cubeMesh.castShadow = true;
 	cubeMesh.receiveShadow = true;
+	
+	cubeMesh.callback = function() { 
+		console.log( "this.name" );
+		if (cubeMesh.position.y == 37 && cubeMesh.position.z == 0) {
+			cubeMesh.position.x = 0;
+	        cubeMesh.position.z = 37;
+	        cubeMesh.position.y = 37;
+		} else {
+			cubeMesh.position.x = 0;
+        	cubeMesh.position.z = 0;
+        	cubeMesh.position.y = 37;
+    	}
+	}
+
+	document.addEventListener( 'mousedown', onDocumentMouseDown, false);
+	
+	objects.push(cubeMesh);
+
 	scene.add(cubeMesh);
-*/
 
 	// "To render something, first we need to add the camera to the scene,
 	// so the renderer knows from which point of view it should render stuff."
@@ -98,12 +114,7 @@ function init () {
 
 	// Controls
 	//controls = new THREE.OrbitControls(camera, renderer.domElement);
-	/*
-	controls = new THREE.FirstPersonControls( camera );
-	controls.movementSpeed = 1000;
-	controls.lookSpeed = 0.125;
-	controls.lookVertical = true;
-	*/
+	
 	// add the camera to the scene and render the scene using this camera. 
 	scene.add(camera);
 	
@@ -113,8 +124,9 @@ function init () {
 	THREEx.WindowResize(renderer, camera);
 	THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
 	
+	// The bigger cube around the smaller cube
 	var skyboxGeometry = new THREE.CubeGeometry(10000, 10000, 10000);
-	var skyboxMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.BackSide });
+	var skyboxMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, side: THREE.BackSide });
 	var skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
 	scene.add(skybox);
 	
@@ -138,7 +150,7 @@ function init () {
 	var loader = new THREE.ColladaLoader();
 
 	loader.options.convertUpAxis = true;
-	loader.load( '1865_Bookcase.dae', function ( collada ) {
+	loader.load('1865_Bookcase.dae', function ( collada ) {
 		var dae = collada.scene;
 	    var skin = collada.skins[0];
 		dae.position.set(-10,90,85);	//x,z,y- if you think in blender dimensions ;)
@@ -147,7 +159,6 @@ function init () {
 	});
 
 	renderer.render(scene, camera);
-
 }
 
 // Renders the scene and updates the render as needed.
@@ -157,6 +168,10 @@ function animate() {
 	renderer.render(scene, camera);
     //controls.update();
     cam_update();
+}
+
+function loadAndRender(filename) {
+	return THREE.ImageUtils.loadTexture(filename, {}, renderer);
 }
 
 function cam_update () {
@@ -192,18 +207,26 @@ function cam_update () {
 		camera.position.set(0,100,0);
 		camera.rotation.set(0,0,0);
 	}
-	/*
-	var relativeCameraOffset = new THREE.Vector3(0,50,200);
-
-	var cameraOffset = relativeCameraOffset.applyMatrix4( camera.matrixWorld );
-
-	camera.position.x = cameraOffset.x;
-	camera.position.y = cameraOffset.y;
-	camera.position.z = cameraOffset.z;
-	camera.lookAt( camera.position );*/
 }
 
+function onDocumentMouseDown( event ) {
+    event.preventDefault();
 
+    var vector = new THREE.Vector3( 
+        ( event.clientX / window.innerWidth ) * 2 - 1, 
+        - ( event.clientY / window.innerHeight ) * 2 + 1, 
+        0.5 );
+
+    projector.unprojectVector( vector, camera );
+
+    var ray = new THREE.Raycaster(camera.position, vector.sub( camera.position ).normalize() );
+    var intersects = ray.intersectObjects( objects );    
+
+    if ( intersects.length > 0 ) {
+        intersects[0].object.callback();
+    }
+
+}
 
 
 
