@@ -6,8 +6,10 @@ var projector = new THREE.Projector();
 
 init();
 animate();
+addFloor();
 
 function init () {
+
 	// width and height of the window
 	var width = window.innerWidth;
 	var height = window.innerHeight;
@@ -26,48 +28,24 @@ function init () {
 		utermost <frameset> element.
 	*/
 	document.body.appendChild(renderer.domElement);
-	 
+
 	// defines the scene
 	scene = new THREE.Scene;
+	scene.fog = new THREE.FogExp2( 0xffffff, 0.0000 );
 
-	var floorTexture = new THREE.ImageUtils.loadTexture( 'images/floor_tile.jpg' );
-	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
-	floorTexture.repeat.set( 100, 100 );
-	var floorMaterial = new THREE.MeshPhongMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-	var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
-	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-	
-	floor.position.y = -5.5;
-	floor.rotation.x = Math.PI / 2;
-	floor.receiveShadow = true;
-	scene.add(floor);
+	addFloor();
 
 	var axes = new THREE.AxisHelper(200);
 	scene.add(axes);
 
-	var cubes = new THREE.Geometry();
-
+	var cereal = new THREE.Geometry();
 	// cubegeometry width, height and depth is 100
 	var cubeGeometry = new THREE.CubeGeometry(7.625*2,11*2,2.75*2);
-
-	// the material of the cube is Lambert because of the lighting use
-	// later in this program, and the color of the cube is black.
-	
-	// var cubeMaterial = new THREE.MeshLambertMaterial({ color: "red" });
-
-	// In Three.js the objects that are being drawn on the screen 
-	// are called meshes.
-
 	var cube = new THREE.Mesh(cubeGeometry);
 	
 	// cube.position.set(0,37,0);
-	
-	for (var i = 0; i < 3; i++) {
-		for (var j = 0; j < 60; j+=20) {
-			cube.position.set(j,37,-i*7);
-			THREE.GeometryUtils.merge( cubes, cube );
-		}
-	}
+	cube.position.set(0,37,0);
+	THREE.GeometryUtils.merge(cereal, cube );
 
 	var materials = [
 	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_left.jpg') } ),
@@ -78,28 +56,49 @@ function init () {
 	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_back.jpg') } ) 
 	];
 
-	var cubeMesh = new THREE.Mesh(cubes, new THREE.MeshFaceMaterial(materials));
+	var cubeMesh = new THREE.Mesh(cereal, new THREE.MeshFaceMaterial(materials));
 	cubeMesh.castShadow = true;
 	cubeMesh.receiveShadow = true;
-	
-	cubeMesh.callback = function() { 
-		console.log( "this.name" );
-		if (cubeMesh.position.y == 37 && cubeMesh.position.z == 0) {
-			cubeMesh.position.x = 0;
-	        cubeMesh.position.z = 37;
-	        cubeMesh.position.y = 37;
-		} else {
-			cubeMesh.position.x = 0;
-        	cubeMesh.position.z = 0;
-        	cubeMesh.position.y = 37;
-    	}
-	}
+
+	objects.push(cubeMesh);
+	scene.add(cubeMesh);
+
+	var pointLight = new THREE.PointLight("white");
+	pointLight.position.set(0, 0, 0);
+	scene.add(pointLight);
 
 	document.addEventListener( 'mousedown', onDocumentMouseDown, false);
 	
-	objects.push(cubeMesh);
+	cubeMesh.callback = function() { 
+		console.log( "this.name" );
+		if (cubeMesh.position.x == 0 && cubeMesh.position.y == 53 && cubeMesh.position.z == 180) {
+			cubeMesh.position.x = 0;
+	        cubeMesh.position.z = 0;
+	        cubeMesh.position.y = 0;
+	        scene.fog = new THREE.FogExp2( 0xffffff, 0.0000 );
+	        pointLight.position.set(0, 0, 0);
+		} else if (cubeMesh.position.x == 0 && cubeMesh.position.y == 0 && cubeMesh.position.z == 0) {
+    		cubeMesh.position.x = 0;
+	        cubeMesh.position.z = 180;
+	        cubeMesh.position.y = 53;
+	        scene.fog = new THREE.FogExp2( 0xFFFFFF, 0.0015 );
+	        pointLight.position.set(0, 100, 250);
+    	}
+	}
 
-	scene.add(cubeMesh);
+	var cereals = new THREE.Geometry();
+
+	for (var i = 1; i < 3; i++) {
+		cube.position.set(0,37,-i*7);
+		THREE.GeometryUtils.merge(cereals, cube );
+	}
+
+	var cubeMeshs = new THREE.Mesh(cereals, new THREE.MeshFaceMaterial(materials));
+	cubeMeshs.castShadow = true;
+	cubeMeshs.receiveShadow = true;
+
+	objects.push(cubeMeshs);
+	scene.add(cubeMeshs);
 
 	// "To render something, first we need to add the camera to the scene,
 	// so the renderer knows from which point of view it should render stuff."
@@ -109,7 +108,7 @@ function init () {
 	// objects created in Three.js have their position set in the 
 	// middle of the scene (x: 0, y: 0, z: 0) by default.
 	// we have to move the camera back and up a little.
-	camera.position.set(0,90,250);
+	camera.position.set(0,90,230);
 	camera.rotation.set(0,0,0);
 
 	// Controls
@@ -146,9 +145,8 @@ function init () {
 	pointLight = new THREE.PointLight("white");
 	pointLight.position.set(200, -300, 0);
 	scene.add(pointLight);
-
+	
 	var loader = new THREE.ColladaLoader();
-
 	loader.options.convertUpAxis = true;
 	loader.load('1865_Bookcase.dae', function ( collada ) {
 		var dae = collada.scene;
@@ -158,7 +156,35 @@ function init () {
 		scene.add(dae);
 	});
 
+	var loader = new THREE.ColladaLoader();
+	loader.options.convertUpAxis = true;
+
+		loader.load('1865_Bookcase.dae', function ( collada ) {
+			var dae = collada.scene;
+		    var skin = collada.skins[0];
+			dae.position.set(140,90,85);	//x,z,y- if you think in blender dimensions ;)
+			dae.scale.set(70,70,70);
+			scene.add(dae);
+		});
+	
 	renderer.render(scene, camera);
+
+}
+
+function addFloor () {
+	var floorTexture = new THREE.ImageUtils.loadTexture( 'images/floor_tile.jpg' );
+	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+	floorTexture.repeat.set( 100, 100 );
+	
+	var floorMaterial = new THREE.MeshPhongMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+	var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+	
+	floor.position.y = -5.5;
+	floor.rotation.x = Math.PI / 2;
+	floor.receiveShadow = true;
+	scene.add(floor);
+
 }
 
 // Renders the scene and updates the render as needed.
@@ -227,8 +253,3 @@ function onDocumentMouseDown( event ) {
     }
 
 }
-
-
-
-
-
