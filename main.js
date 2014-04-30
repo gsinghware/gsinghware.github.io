@@ -3,6 +3,7 @@ var keyboard = new THREEx.KeyboardState();
 var renderer, scene, camera, controls;
 var objects = [];
 var projector = new THREE.Projector();
+var isMove = true;
 
 init();
 animate();
@@ -47,14 +48,11 @@ function init () {
 	cube.position.set(0,37,0);
 	THREE.GeometryUtils.merge(cereal, cube );
 
-	var materials = [
-	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_left.jpg') } ),
-	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_right.jpg') } ),
-	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_top.jpg') } ),
-	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_bottom.jpg') } ),
-	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_front.jpg') } ),
-	    new THREE.MeshPhongMaterial( { map: loadAndRender('images/cereal_back.jpg') } ) 
-	];
+	var cereal_images = ['images/cereal_left.jpg', 'images/cereal_right.jpg', 'images/cereal_top.jpg', 'images/cereal_bottom.jpg', 'images/cereal_front.jpg', 'images/cereal_back.jpg'];
+	var materials = [];
+	for (var a = 0; a < 6; a++) {
+		materials[a] = new THREE.MeshPhongMaterial( {map: loadAndRender(cereal_images[a])} );
+	}
 
 	var cubeMesh = new THREE.Mesh(cereal, new THREE.MeshFaceMaterial(materials));
 	cubeMesh.castShadow = true;
@@ -71,18 +69,20 @@ function init () {
 	
 	cubeMesh.callback = function() { 
 		console.log( "this.name" );
-		if (cubeMesh.position.x == 0 && cubeMesh.position.y == 53 && cubeMesh.position.z == 180) {
+		if (cubeMesh.position.x == camera.position.x && cubeMesh.position.y == 53 && cubeMesh.position.z == 180) {
 			cubeMesh.position.x = 0;
 	        cubeMesh.position.z = 0;
 	        cubeMesh.position.y = 0;
 	        scene.fog = new THREE.FogExp2( 0xffffff, 0.0000 );
 	        pointLight.position.set(0, 0, 0);
+	        isMove = true;
 		} else if (cubeMesh.position.x == 0 && cubeMesh.position.y == 0 && cubeMesh.position.z == 0) {
-    		cubeMesh.position.x = 0;
-	        cubeMesh.position.z = 180;
-	        cubeMesh.position.y = 53;
-	        scene.fog = new THREE.FogExp2( 0xFFFFFF, 0.0015 );
-	        pointLight.position.set(0, 100, 250);
+    		cubeMesh.position.x = camera.position.x;
+		    cubeMesh.position.y = 53;
+		    cubeMesh.position.z = 180;
+		    scene.fog = new THREE.FogExp2( 0xFFFFFF, 0.0015 );
+		    pointLight.position.set(camera.position.x, 100, 250);
+		    isMove = false;
     	}
 	}
 
@@ -108,7 +108,7 @@ function init () {
 	// objects created in Three.js have their position set in the 
 	// middle of the scene (x: 0, y: 0, z: 0) by default.
 	// we have to move the camera back and up a little.
-	camera.position.set(0,90,230);
+	camera.position.set(120,90,230);
 	camera.rotation.set(0,0,0);
 
 	// Controls
@@ -159,14 +159,43 @@ function init () {
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
 
-		loader.load('1865_Bookcase.dae', function ( collada ) {
-			var dae = collada.scene;
-		    var skin = collada.skins[0];
-			dae.position.set(140,90,85);	//x,z,y- if you think in blender dimensions ;)
-			dae.scale.set(70,70,70);
-			scene.add(dae);
-		});
-	
+	loader.load('1865_Bookcase.dae', function ( collada ) {
+		var dae = collada.scene;
+	    var skin = collada.skins[0];
+		dae.position.set(140,90,85);	//x,z,y- if you think in blender dimensions ;)
+		dae.scale.set(70,70,70);
+		scene.add(dae);
+	});
+
+	var manager = new THREE.LoadingManager();
+	manager.onProgress = function ( item, loaded, total ) {
+		console.log( item, loaded, total );
+	};
+
+	var texture = new THREE.Texture();
+
+	var loader = new THREE.ImageLoader( manager );
+	loader.load( 'Cocaine.jpg', function ( image ) {
+		texture.image = image;
+		texture.needsUpdate = true;
+	} );
+
+	// model
+
+	var loader = new THREE.OBJLoader( manager );
+	loader.load( 'energy_drink_can.obj', function ( object ) {
+		object.traverse( function ( child ) {
+			if ( child instanceof THREE.Mesh ) {
+				child.material.map = texture;
+			}
+		} );
+		object.scale = new THREE.Vector3( 0.05, 0.05, 0.05 );
+		object.position.set(10,37,-20);
+		scene.add( object );
+
+	} );
+
+
 	renderer.render(scene, camera);
 
 }
@@ -184,8 +213,8 @@ function addFloor () {
 	floor.rotation.x = Math.PI / 2;
 	floor.receiveShadow = true;
 	scene.add(floor);
-
 }
+
 
 // Renders the scene and updates the render as needed.
 function animate() {
@@ -201,37 +230,39 @@ function loadAndRender(filename) {
 }
 
 function cam_update () {
-	var delta = clock.getDelta(); // seconds.
-	var moveDistance = 200 * delta; // 200 pixels per second
-	var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+	if (isMove) {
+		var delta = clock.getDelta(); // seconds.
+		var moveDistance = 200 * delta; // 200 pixels per second
+		var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
 
-	// local transformations
+		// local transformations
 
-	// move forwards/backwards/left/right
-	if ( keyboard.pressed("W") )
-		camera.translateZ( -moveDistance );
-	if ( keyboard.pressed("S") )
-		camera.translateZ(  moveDistance );
-	if ( keyboard.pressed("Q") )
-		camera.translateX( -moveDistance );
-	if ( keyboard.pressed("E") )
-		camera.translateX(  moveDistance );	
-	
-	// rotate left/right/up/down
-	var rotation_matrix = new THREE.Matrix4().identity();
-	if ( keyboard.pressed("A") )
-		camera.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-	if ( keyboard.pressed("D") )
-		camera.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-	if ( keyboard.pressed("R") )
-		camera.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
-	if ( keyboard.pressed("F") )
-		camera.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+		// move forwards/backwards/left/right
+		if ( keyboard.pressed("W") )
+			camera.translateZ( -moveDistance );
+		if ( keyboard.pressed("S") )
+			camera.translateZ(  moveDistance );
+		if ( keyboard.pressed("Q") )
+			camera.translateX( -moveDistance );
+		if ( keyboard.pressed("E") )
+			camera.translateX(  moveDistance );	
+		
+		// rotate left/right/up/down
+		var rotation_matrix = new THREE.Matrix4().identity();
+		if ( keyboard.pressed("A") )
+			camera.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+		if ( keyboard.pressed("D") )
+			camera.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+		if ( keyboard.pressed("R") )
+			camera.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
+		if ( keyboard.pressed("F") )
+			camera.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
 
-	if ( keyboard.pressed("Z") )
-	{
-		camera.position.set(0,100,0);
-		camera.rotation.set(0,0,0);
+		if ( keyboard.pressed("Z") )
+		{
+			camera.position.set(0,100,0);
+			camera.rotation.set(0,0,0);
+		}
 	}
 }
 
