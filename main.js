@@ -11,15 +11,12 @@ addFloor();
 
 function init () {
 
-	// width and height of the window
-	var width = window.innerWidth;
-	var height = window.innerHeight;
+	var width = window.innerWidth;								// width of the window
+	var height = window.innerHeight;							// height of the window
 
-	// WebGl render's options is set to antialias (smooth edges)
-	renderer = new THREE.WebGLRenderer({ antialias: true });
-
-	// set render's size to the window size
-	renderer.setSize(width, height);
+	renderer = new THREE.WebGLRenderer({ antialias: true });	// WebGl render's options is set to antialias (smooth edges)
+	renderer.setSize(width, height);							// set render's size to the window size
+	
 
 	// add the render's canvas to the document
 	/*
@@ -30,9 +27,8 @@ function init () {
 	*/
 	document.body.appendChild(renderer.domElement);
 
-	// defines the scene
-	scene = new THREE.Scene;
-	scene.fog = new THREE.FogExp2( 0xffffff, 0.0000 );
+	scene = new THREE.Scene;									// define a scene
+	scene.fog = new THREE.FogExp2( 0xffffff, 0.0000 );			// no fog yet	
 
 	addFloor();
 
@@ -40,11 +36,9 @@ function init () {
 	scene.add(axes);
 
 	var cereal = new THREE.Geometry();
-	// cubegeometry width, height and depth is 100
-	var cubeGeometry = new THREE.CubeGeometry(7.625*2,11*2,2.75*2);
-	var cube = new THREE.Mesh(cubeGeometry);
 	
-	// cube.position.set(0,37,0);
+	var cubeGeometry = new THREE.CubeGeometry(7.625*2,11*2,2.75*2);	// cubegeometry width, height and depth is 100
+	var cube = new THREE.Mesh(cubeGeometry);
 	cube.position.set(0,37,0);
 	THREE.GeometryUtils.merge(cereal, cube );
 
@@ -69,21 +63,21 @@ function init () {
 	
 	cubeMesh.callback = function() { 
 		console.log( "this.name" );
-		if (cubeMesh.position.x == camera.position.x && cubeMesh.position.y == 53 && cubeMesh.position.z == 180) {
-			cubeMesh.position.x = 0;
-	        cubeMesh.position.z = 0;
-	        cubeMesh.position.y = 0;
-	        scene.fog = new THREE.FogExp2( 0xffffff, 0.0000 );
-	        pointLight.position.set(0, 0, 0);
-	        isMove = true;
-		} else if (cubeMesh.position.x == 0 && cubeMesh.position.y == 0 && cubeMesh.position.z == 0) {
+		if (cubeMesh.position.x == 0 && cubeMesh.position.y == 0 && cubeMesh.position.z == 0) {
     		cubeMesh.position.x = camera.position.x;
 		    cubeMesh.position.y = 53;
 		    cubeMesh.position.z = 180;
 		    scene.fog = new THREE.FogExp2( 0xFFFFFF, 0.0015 );
 		    pointLight.position.set(camera.position.x, 100, 250);
 		    isMove = false;
-    	}
+    	} else if (cubeMesh.position.x == camera.position.x && cubeMesh.position.y == 53 && cubeMesh.position.z == 180) {
+			cubeMesh.position.x = 0;
+	        cubeMesh.position.z = 0;
+	        cubeMesh.position.y = 0;
+	        scene.fog = new THREE.FogExp2( 0xffffff, 0.0000 );
+	        pointLight.position.set(0, 0, 0);
+	        isMove = true;
+		} 
 	}
 
 	var cereals = new THREE.Geometry();
@@ -96,6 +90,8 @@ function init () {
 	var cubeMeshs = new THREE.Mesh(cereals, new THREE.MeshFaceMaterial(materials));
 	cubeMeshs.castShadow = true;
 	cubeMeshs.receiveShadow = true;
+
+	cubeMeshs.callback = function () {}
 
 	objects.push(cubeMeshs);
 	scene.add(cubeMeshs);
@@ -172,29 +168,31 @@ function init () {
 		console.log( item, loaded, total );
 	};
 
-	var texture = new THREE.Texture();
+	document.addEventListener( 'mousedown', onDocumentMouseDown, false);
 
-	var loader = new THREE.ImageLoader( manager );
-	loader.load( 'Cocaine.jpg', function ( image ) {
-		texture.image = image;
-		texture.needsUpdate = true;
-	} );
+	var texture = THREE.ImageUtils.loadTexture('redbullnutritionfactlabel.png');
+    var patchMaterial = new THREE.MeshLambertMaterial({map: texture });
+    var cylinder = new THREE.Mesh(new THREE.CylinderGeometry( 3, 3, 15, 80, 80, true ), patchMaterial );
+    cylinder.position.set(30,50,0);
+    cylinder.rotation.y = 90;
+    cylinder.overdraw = true;
+    
+    var redBull = new THREE.CylinderGeometry( 3, 3, 15, 80, 80, true );
 
-	// model
+	for (var i = 1; i < 10; i++) {
+		cylinder.position.set(30,50,-i*7);
+		THREE.GeometryUtils.merge(redBull, cylinder );
+	}
 
-	var loader = new THREE.OBJLoader( manager );
-	loader.load( 'energy_drink_can.obj', function ( object ) {
-		object.traverse( function ( child ) {
-			if ( child instanceof THREE.Mesh ) {
-				child.material.map = texture;
-			}
-		} );
-		object.scale = new THREE.Vector3( 0.05, 0.05, 0.05 );
-		object.position.set(10,37,-20);
-		scene.add( object );
+	var cylinderMesh = new THREE.Mesh(redBull, patchMaterial);
+	cylinderMesh.castShadow = true;
+	cylinderMesh.receiveShadow = true;
 
-	} );
+	cylinderMesh.callback = function () {
+		console.log("helo");
+	}
 
+	scene.add(cylinderMesh);
 
 	renderer.render(scene, camera);
 
@@ -247,7 +245,6 @@ function cam_update () {
 		if ( keyboard.pressed("E") )
 			camera.translateX(  moveDistance );	
 		
-		// rotate left/right/up/down
 		var rotation_matrix = new THREE.Matrix4().identity();
 		if ( keyboard.pressed("A") )
 			camera.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
@@ -277,7 +274,7 @@ function onDocumentMouseDown( event ) {
     projector.unprojectVector( vector, camera );
 
     var ray = new THREE.Raycaster(camera.position, vector.sub( camera.position ).normalize() );
-    var intersects = ray.intersectObjects( objects );    
+    var intersects = ray.intersectObjects(objects);    
 
     if ( intersects.length > 0 ) {
         intersects[0].object.callback();
