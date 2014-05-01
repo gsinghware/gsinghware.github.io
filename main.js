@@ -4,6 +4,17 @@ var renderer, scene, camera, controls;
 var objects = [];
 var projector = new THREE.Projector();
 var isMove = true;
+var cubeMesh;
+var floor;
+
+var targetRotation = 0;
+var targetRotationOnMouseDown = 0;
+
+var mouseX = 0;
+var mouseXOnMouseDown = 0;
+
+var windowHalfX = window.innerWidth / 2;
+var windowHalfY = window.innerHeight / 2;
 
 init();
 animate();
@@ -17,14 +28,15 @@ function init () {
 	renderer = new THREE.WebGLRenderer({ antialias: true });	// WebGl render's options is set to antialias (smooth edges)
 	renderer.setSize(width, height);							// set render's size to the window size
 	
-
 	// add the render's canvas to the document
+	
 	/*
 		document.body is the element that contains the content for 
 		the document. In documents with <body> contents, returns the 
 		<body> element, and in frameset documents, this returns the o
 		utermost <frameset> element.
 	*/
+
 	document.body.appendChild(renderer.domElement);
 
 	scene = new THREE.Scene;									// define a scene
@@ -42,13 +54,14 @@ function init () {
 	cube.position.set(0,37,0);
 	THREE.GeometryUtils.merge(cereal, cube );
 
-	var cereal_images = ['images/cereal_left.jpg', 'images/cereal_right.jpg', 'images/cereal_top.jpg', 'images/cereal_bottom.jpg', 'images/cereal_front.jpg', 'images/cereal_back.jpg'];
+	var cereal_images = ['images/cereal_left.jpg', 'images/cereal_right.jpg', 'images/cereal_top.jpg', 
+						 'images/cereal_bottom.jpg', 'images/cereal_front.jpg', 'images/cereal_back.jpg'];
 	var materials = [];
 	for (var a = 0; a < 6; a++) {
 		materials[a] = new THREE.MeshPhongMaterial( {map: loadAndRender(cereal_images[a])} );
 	}
 
-	var cubeMesh = new THREE.Mesh(cereal, new THREE.MeshFaceMaterial(materials));
+	cubeMesh = new THREE.Mesh(cereal, new THREE.MeshFaceMaterial(materials));
 	cubeMesh.castShadow = true;
 	cubeMesh.receiveShadow = true;
 
@@ -59,25 +72,31 @@ function init () {
 	pointLight.position.set(0, 0, 0);
 	scene.add(pointLight);
 
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false);
+	document.addEventListener( 'mousedown', aonDocumentMouseDown, false);
 	
+	var flag = false;
+
 	cubeMesh.callback = function() { 
 		console.log( "this.name" );
 		if (cubeMesh.position.x == 0 && cubeMesh.position.y == 0 && cubeMesh.position.z == 0) {
     		cubeMesh.position.x = camera.position.x;
 		    cubeMesh.position.y = 53;
-		    cubeMesh.position.z = 180;
+		    cubeMesh.position.z = 190;
 		    scene.fog = new THREE.FogExp2( 0xFFFFFF, 0.0015 );
-		    pointLight.position.set(camera.position.x, 100, 250);
+		    pointLight.position.set(camera.position.x, 40, 250);
 		    isMove = false;
-    	} else if (cubeMesh.position.x == camera.position.x && cubeMesh.position.y == 53 && cubeMesh.position.z == 180) {
+		    	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+
+    	} /*else if (cubeMesh.position.x == camera.position.x && cubeMesh.position.y == 53 && cubeMesh.position.z == 180) {
 			cubeMesh.position.x = 0;
 	        cubeMesh.position.z = 0;
 	        cubeMesh.position.y = 0;
 	        scene.fog = new THREE.FogExp2( 0xffffff, 0.0000 );
 	        pointLight.position.set(0, 0, 0);
 	        isMove = true;
-		} 
+		} */
 	}
 
 	var cereals = new THREE.Geometry();
@@ -91,7 +110,13 @@ function init () {
 	cubeMeshs.castShadow = true;
 	cubeMeshs.receiveShadow = true;
 
-	cubeMeshs.callback = function () {}
+	cubeMeshs.callback = function () {
+			cubeMesh.position.x = 0;
+	        cubeMesh.position.z = 0;
+	        cubeMesh.position.y = 0;
+	        scene.fog = new THREE.FogExp2( 0xffffff, 0.0000 );
+	        pointLight.position.set(0, 0, 0);
+	}
 
 	objects.push(cubeMeshs);
 	scene.add(cubeMeshs);
@@ -163,13 +188,6 @@ function init () {
 		scene.add(dae);
 	});
 
-	var manager = new THREE.LoadingManager();
-	manager.onProgress = function ( item, loaded, total ) {
-		console.log( item, loaded, total );
-	};
-
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false);
-
 	var texture = THREE.ImageUtils.loadTexture('redbullnutritionfactlabel.png');
     var patchMaterial = new THREE.MeshLambertMaterial({map: texture });
     var cylinder = new THREE.Mesh(new THREE.CylinderGeometry( 3, 3, 15, 80, 80, true ), patchMaterial );
@@ -179,9 +197,11 @@ function init () {
     
     var redBull = new THREE.CylinderGeometry( 3, 3, 15, 80, 80, true );
 
-	for (var i = 1; i < 10; i++) {
-		cylinder.position.set(30,50,-i*7);
-		THREE.GeometryUtils.merge(redBull, cylinder );
+	for (var i = 1; i < 5; i++) {
+		for (var j = 1; j < 5; j++) {
+			cylinder.position.set(i*7+20,35,-j*4);
+			THREE.GeometryUtils.merge(redBull, cylinder );
+		}
 	}
 
 	var cylinderMesh = new THREE.Mesh(redBull, patchMaterial);
@@ -193,7 +213,6 @@ function init () {
 	}
 
 	scene.add(cylinderMesh);
-
 	renderer.render(scene, camera);
 
 }
@@ -205,7 +224,7 @@ function addFloor () {
 	
 	var floorMaterial = new THREE.MeshPhongMaterial( { map: floorTexture, side: THREE.DoubleSide } );
 	var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
-	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+	floor = new THREE.Mesh(floorGeometry, floorMaterial);
 	
 	floor.position.y = -5.5;
 	floor.rotation.x = Math.PI / 2;
@@ -219,6 +238,7 @@ function animate() {
 	var clock = new THREE.Clock();
 	requestAnimationFrame(animate);
 	renderer.render(scene, camera);
+	cubeMesh.rotation.y += ( targetRotation - cubeMesh.rotation.y ) * 0.05;
     //controls.update();
     cam_update();
 }
@@ -263,7 +283,7 @@ function cam_update () {
 	}
 }
 
-function onDocumentMouseDown( event ) {
+function aonDocumentMouseDown( event ) {
     event.preventDefault();
 
     var vector = new THREE.Vector3( 
@@ -279,5 +299,62 @@ function onDocumentMouseDown( event ) {
     if ( intersects.length > 0 ) {
         intersects[0].object.callback();
     }
+}
 
+
+function onWindowResize() {
+	windowHalfX = window.innerWidth / 2;
+	windowHalfY = window.innerHeight / 2;
+
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+function onDocumentMouseDown( event ) {
+
+	event.preventDefault();
+
+	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+	document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+	document.addEventListener( 'mouseout', onDocumentMouseOut, false );
+
+	mouseXOnMouseDown = event.clientX - windowHalfX;
+	targetRotationOnMouseDown = targetRotation;
+}
+
+function onDocumentMouseMove( event ) {
+	mouseX = event.clientX - windowHalfX;
+	targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.02;
+}
+
+function onDocumentMouseUp( event ) {
+	document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+	document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+	document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+}
+
+function onDocumentMouseOut( event ) {
+	document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+	document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+	document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+}
+
+function onDocumentTouchStart( event ) {
+	if ( event.touches.length === 1 ) {
+		event.preventDefault();
+
+		mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
+		targetRotationOnMouseDown = targetRotation;
+	}
+}
+
+function onDocumentTouchMove( event ) {
+	if ( event.touches.length === 1 ) {
+		event.preventDefault();
+
+		mouseX = event.touches[ 0 ].pageX - windowHalfX;
+		targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
+	}
 }
