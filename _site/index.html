@@ -37,8 +37,23 @@
 </header>
 
 <main class="content" role="main">
-
-    <h2>Blog</h2>
+    <nav>
+    <ul>
+        <li><a href="home.html">Home</a></li>
+        <li>
+      <a href="products.html">Products <span class="caret"></span></a>
+            <div>
+                <ul>
+                    <li><a href="products.html#chair">Chair</a></li>
+                    <li><a href="products.html#table">Table</a></li>
+                    <li><a href="cooker.html">Cooker</a></li>
+                </ul>
+            </div>
+        </li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="help.html">Help</a></li>
+    </ul>
+    </nav>
 
     <article class="post">
         <header class="post-header">
@@ -69,11 +84,10 @@ To add new posts, simply add a file in the <code>_posts</code> directory that fo
     </article>
 
     <nav class="pagination" role="pagination">
-        <span class="page-number"> Page 1 of 1 </span> 
+        <span class="page-number"> Page 1 of 1 </span>
     </nav>
-
+    
 </main>
-
 
     <footer class="site-footer">
         <a class="subscribe icon-feed" href="/rss.xml"><span class="tooltip">Subscribe!</span></a>
@@ -82,7 +96,6 @@ To add new posts, simply add a file in the <code>_posts</code> directory that fo
              <section class="poweredby">Made with Jekyll using <a href="http://github.com/rosario/kasper">Kasper theme</a></section>
         </div>
     </footer>
-
     
     <script type="text/javascript" src="/jekyll_portfolio/assets/js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="/jekyll_portfolio/assets/js/jquery.fitvids.js"></script>
@@ -101,6 +114,7 @@ To add new posts, simply add a file in the <code>_posts</code> directory that fo
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
-    </script>   
+    </script>
+
 </body>
 </html>
