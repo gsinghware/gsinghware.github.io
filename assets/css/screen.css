@@ -157,7 +157,7 @@ a:hover {
 
 h1 a, h2 a, h3 a,
 h4 a, h5 a, h6 a {
-    color: #330066;
+    color: #0086B3;
 }
 
 
@@ -372,13 +372,15 @@ margin on the iframe, cause it breaks stuff. */
     margin-bottom: 5rem;
     text-align: center;
     color: #fff;
-    background: #330066 no-repeat center center;
+    background: #0086B3 no-repeat center center;
     background-size: cover;
 }
 
 .blog-logo {
     text-decoration: none;
 }
+
+/*0086B3*/
 
 /* Yo-logo. Yolo-go. Upload one in ghost/settings/ */
 .blog-logo img {
