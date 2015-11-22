@@ -10,6 +10,13 @@ body {
 	margin-top: 30px;
 }
 
+.btn-info 
+{
+    background-color: #23c6c8;
+    border-color: #23c6c8;
+    color: #FFFFFF;
+}
+
 footer {
     margin-top: 48px;
     margin-bottom:20px;
