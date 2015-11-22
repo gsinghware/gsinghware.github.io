@@ -1,103 +1,188 @@
 <!DOCTYPE html>
-<html>
-<head>   
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>Home of Gurpreet Singh</title>
-    <meta name="description" content="Home of Gurpreet Singh, View my blog, Bio, Résumé, and more..." />
-
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="MobileOptimized" content="320" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Open+Sans:700,400" />
-    <!-- This is for syntax highlight -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/syntax.css">
-    <!-- Customisation  -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/main.css" />
-
-</head>
-<body class="home-template">
-
+<html lang="en" ng-app="Gurpreet Singh - Personal Portfolio">
     
-    <header class="site-head" >
-    <div class="vertical">
-        <div class="site-head-content" class="inner">
-            <h1 class="blog-title">Gurpreet Singh</h1>
-            <h2 class="blog-description">My Blog testing</h2>
-        </div>
-    </div>
-    </header>
+    <head>
+        <title>Gurpreet Singh</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="css/gsingh.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    </head>
 
-<main class="content" role="main">
-    
-    <nav>
-    <ul>
-        <li><a href="/">Blog</a></li>
-        <!--
-        <li><a href="products.html">About<span class="caret"></span></a>
-            <div>
-                <ul>
-                    <li><a href="products.html#chair">Chair</a></li>
-                    <li><a href="products.html#table">Table</a></li>
-                    <li><a href="cooker.html">Cooker</a></li>
-                </ul>
-            </div>
-        </li>-->
-        <li><a href="about.html">About</a></li>
-        <li><a href="resume.html">Résumé</a></li>
-        <li><a href="projects.html">Projects</a></li>
-    </ul>
-    </nav>
+    <body>
 
-    <article class="post">
-        <header class="post-header">
-            <span class="post-meta"><time datetime="2014-06-15">15 Jun 2014</time> </span>
-            <h2 class="post-title"><a href="http://www.webrtc.org/demo">Web Real Time Communication (WebRTC) Technology</a></h2>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 top-section">
+                    <div class="profile-pic">
+                        <center><img src="http://i58.tinypic.com/2rr064z.jpg" class="img-responsive" alt=""></center>
+                    </div>
 
-        </header>
-        <section class="post-excerpt">
-            <p>
-                "WebRTC offers web application developers the ability to write rich, realtime multimedia applications (think video chat) on the web, without requiring plugins, downloads or installs."
-            </p>
-        </section>
-    </article>
+                    <div class="profile-title">
+                        <div class="profile-title-name">
+                            Gurpreet Singh
+                        </div>
+                        <div class="profile-title-job">
+                            Software Engineer
+                        </div>
+                    </div>
 
-    <nav class="pagination" role="pagination">
-        <span class="page-number"> Page 1 of 1 </span>
-    </nav>
-    
-</main>
+                    <div class="profile-userbuttons">
+                        <a ng-click="setRoute('contact')" type="button" class="btn btn-danger btn-sm">Send a Message</a>
+                    </div>
 
-    <footer class="site-footer">
-        <a class="subscribe icon-feed" href="/rss.xml"><span class="tooltip">Subscribe!</span></a>
-        <div class="inner">
-             <section class="copyright">All content copyright <a href="/">Gursingh</a> &copy;  &bull; All rights reserved.</section>
-             <section class="poweredby">Made with Jekyll using <a href="http://github.com/rosario/kasper">Kasper theme</a></section>
-        </div>
-    </footer>
-    
-    <script type="text/javascript" src="/assets/js/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
-    <script type="text/javascript" src="/assets/js/index.js"></script>
+                    <div class="profile-usermenu">
+                        <center>
+                        Follow me on <a href="https://www.linkedin.com/in/gsinghbox">LinkedIn</a>, <a href="https://github.com/gsinghware">GitHub</a>.
+                        </center>
+                    </div>
+                </div>
+            </div> <!-- top section -->
 
-    <!-- Google Analytics Tracking code -->
-    <script type="text/javascript">
+            <div class="row">
+                <div class="col-md-12 center-section">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h3>about me</h3>
+                        </div>
 
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
-      _gaq.push(['_trackPageview']);
+                        <div class="ibox-content">
+                            Hi, I am Gurpreet Singh and I <span class="glyphicon glyphicon-heart red" style="color: red;"></span> technology. 
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+                            </br></br>
 
-    </script>
+                            I have worked on projects in the field of Image Processing, Computer Vision, Web Applications, Algorithms, Databases, Compiler Construction, Information Theory and Computer Security.
 
-</body>
+                            </br></br>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- .about me -->
+
+            <div class="row">
+                <div class="col-md-12 center-section">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h3>project showcase</h3>
+                        </div>
+
+                        <div class="ibox-content">
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            Money Recognition System
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">
+                                            Vision: Image Enhancement and Feature Detection Project
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            Cloud Weather State Visualization using D3
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            Pascal Compiler
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">
+                                            Virtual SuperMarket Using Three.Js
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            3D LEDCube Simulation using Qt and OpenGL
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            The Little Schemer Lazy Evaluation Interpreter
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">
+                                            bookBin - Online Book Store using MySQL, PHP
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">
+                                            Algorithms Projects
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                         
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- project showcase row-->
+
+            <footer>
+                <center>© 2015 Gurpreet Singh.</center>
+            </footer>
+
+        </div>  <!-- .container -->
+
+    </body>
 </html>
