@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>Gurpreet Singh</title>
+ <link href="http://gsinghware.github.io/atom.xml" rel="self"/>
+ <link href="http://gsinghware.github.io/"/>
+ <updated>2016-01-26T15:43:18-05:00</updated>
+ <id>http://gsinghware.github.io</id>
+ <author>
+   <name>Gurpreet Singh</name>
+ </author>
+ 
+ 
+   
+   <entry>
+     <title>First Post</title>
+     <link href="http://gsinghware.github.io/posts/left"/>
+     <updated>2016-01-26T00:00:00-05:00</updated>
+     <id>http://gsinghware.github.io/posts/left</id>
+     <content type="html">&lt;p&gt;I&amp;rsquo;m just testing this first post.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;If you have any questions, follow and ping me on Twitter - I&amp;rsquo;m &lt;a href=&quot;https://twitter.com/_g_singh_&quot;&gt;@&lt;em&gt;g_singh&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- You&#39;ll want to [get the code][left] and read the README to learn how to
+install and set up Left for your own purposes.
+
+If you have any questions, follow and ping me on Twitter- I&#39;m
+[@holman][twitter].
+
+[jekyll]: https://github.com/mojombo/jekyll
+[zh]: http://zachholman.com
+[left]: https://github.com/holman/left#readme --&gt;
+
+</content>
+   </entry>
+   
+ 
+   
+ 
+ 
+</feed>

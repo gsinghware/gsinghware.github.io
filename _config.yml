@@ -1,0 +1,13 @@
+markdown: rdiscount
+permalink: /posts/:title
+rdiscount:
+  extensions: [smart]
+
+gems:
+  - jekyll-sitemap
+
+name: Gurpreet Singh
+url: http://gsinghware.github.io
+github: https://github.com/gsinghware
+description: hero blog
+twitter: _singhg
