@@ -4,12 +4,41 @@
  <title>Gurpreet Singh</title>
  <link href="http://gsinghware.github.io/atom.xml" rel="self"/>
  <link href="http://gsinghware.github.io/"/>
- <updated>2016-03-17T00:17:03-04:00</updated>
+ <updated>2016-03-17T11:58:58-04:00</updated>
  <id>http://gsinghware.github.io</id>
  <author>
    <name>Gurpreet Singh</name>
  </author>
  
+ 
+   
+   <entry>
+     <title>Symmetric and Asymmetric Encryption</title>
+     <link href="http://gsinghware.github.io/posts/Symmetric-And-Asymmetric-Encryption"/>
+     <updated>2016-03-17T00:00:00-04:00</updated>
+     <id>http://gsinghware.github.io/posts/Symmetric-And-Asymmetric-Encryption</id>
+     <content type="html">&lt;p&gt;Information can be encrypted using symmetrical (AKA shared key or shared secret encryption) or asymmetrical schemes (AKA public-key cryptography).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Symmetric Encryption&lt;/strong&gt; - In symmetrical encryption, the information is encrypted and decrypted using the same key. Anyone who holds the key can encrypt and decrypt messages and send them to anyone else who has the key. Algorithms that use symmetric encryption are Blowfish, Twofish, DES, 3DES, AES, and RC4.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Asymmetric Encryption&lt;/strong&gt; - In asymmetrical encryption, the information is encrypted using a public key and decrypted using the private key. There is mathematical relationship between the public and the private key. The public key is shared with everyone and it reveals no information about the private key. The private key is kept in secret and whoever holds this key can decrypt the messages encrypted using the public key. Algorithms that use asymmetric encryption are: RSA, El Gamel, Diffie-Hellman Key Exchange and more…&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;If you have any questions, follow and ping me on Twitter - I’m &lt;a href=&quot;https://twitter.com/_g_singh_&quot;&gt;@&lt;em&gt;g_singh&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- You&#39;ll want to [get the code][left] and read the README to learn how to
+install and set up Left for your own purposes.
+
+If you have any questions, follow and ping me on Twitter- I&#39;m
+[@holman][twitter].
+
+[jekyll]: https://github.com/mojombo/jekyll
+[zh]: http://zachholman.com
+[left]: https://github.com/holman/left#readme --&gt;
+</content>
+   </entry>
+   
  
    
    <entry>
@@ -19,9 +48,9 @@
      <id>http://gsinghware.github.io/posts/How-SSH-Works</id>
      <content type="html">&lt;p&gt;I’ll be talking about SSH or secure-shell today. SSH is a Internet protocol. It’s a set of rules specifying how two computers securely communicate over an unsecure network, like the internet. It’s widely used for system administration, such as performing software updates or software deployment on Unix/Linux machines.&lt;/p&gt;
 
-&lt;p&gt;SSH is based on Server/Client Architecture. SSH Server program must be installed on the remote computer and SSH client program must be installed on your computer. When you use SSH, you have access to the terminal screen/command line of the remote server computer.&lt;/p&gt;
+&lt;p&gt;SSH is based on Server/Client Architecture. SSH Server program must be installed on the remote computer and SSH client program must be installed on your computer.&lt;/p&gt;
 
-&lt;p&gt;Here is a list of SSH clients, software that you use to set-up connection to the SSH server, for all the popular Operating systems:&lt;/p&gt;
+&lt;p&gt;When you use SSH, you have access to the terminal screen/command line of the remote server computer. Here is a list of SSH clients, software that you use to set-up connection to the SSH server, for all the popular Operating systems:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://2.bp.blogspot.com/-wDtfx8AKLFI/VuovT8wt-aI/AAAAAAAACbk/-vlfF7YShUU0ioLYrEi9ZvKiFKzEX844g/s320/SSH-OS-Clients.png&quot; alt=&quot;alt text&quot; title=&quot;SSH OS Clients&quot; /&gt;&lt;/p&gt;
 
@@ -38,6 +67,37 @@
     &lt;p&gt;Data Integrity – This is guarantee that no one can modify information being sent from sender to receiver.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;SSH Features&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Secure Remote Logins&lt;/strong&gt; - SSH allows secure remote login to the server by using an encrypted connection by using a ssh client program that authenticates you to the remote computer’s SSH server. This means your username and password are encrypted locally first and then they are transmitted. If authenticated successfully, any packets which follow are encrypted using the SSH protocol.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Secure File Transfer&lt;/strong&gt; – Using SSH, a file that may contain sensitive information can be transmitted securely between machines with scp command.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Remotely execute commands&lt;/strong&gt; - Using the SSH connection, you can execute commands externally on the remote server computer.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Port Forwarding&lt;/strong&gt; - SSH can secure other unsecure TCP/IP protocols such as FTP, telnet using port forwarding techniques. For example one can use telnet protocol over SSH connection.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To be continued…&lt;/p&gt;
+
+&lt;p&gt;**SSH Encryption **&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Connecting to a SSH server on Unix/Linux with user/pass authentication&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Connecting to a SSH server on Unix/Linux with key authenticationg&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Connecting to a SSH server on Windows with user/pass authentication&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Connecting to a SSH server on Windows with key authentication&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Potential Attacks byt hackers&lt;/strong&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 

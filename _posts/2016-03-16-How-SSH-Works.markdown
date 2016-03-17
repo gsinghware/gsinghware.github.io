@@ -6,9 +6,9 @@ category: posts
 
 I'll be talking about SSH or secure-shell today. SSH is a Internet protocol. It's a set of rules specifying how two computers securely communicate over an unsecure network, like the internet. It's widely used for system administration, such as performing software updates or software deployment on Unix/Linux machines.
 
-SSH is based on Server/Client Architecture. SSH Server program must be installed on the remote computer and SSH client program must be installed on your computer. When you use SSH, you have access to the terminal screen/command line of the remote server computer.
+SSH is based on Server/Client Architecture. SSH Server program must be installed on the remote computer and SSH client program must be installed on your computer. 
 
-Here is a list of SSH clients, software that you use to set-up connection to the SSH server, for all the popular Operating systems:
+When you use SSH, you have access to the terminal screen/command line of the remote server computer. Here is a list of SSH clients, software that you use to set-up connection to the SSH server, for all the popular Operating systems:
 
 ![alt text](https://2.bp.blogspot.com/-wDtfx8AKLFI/VuovT8wt-aI/AAAAAAAACbk/-vlfF7YShUU0ioLYrEi9ZvKiFKzEX844g/s320/SSH-OS-Clients.png "SSH OS Clients")
 
@@ -20,19 +20,29 @@ The SSH Protocol mainly consists of three components. **Authentication, Encrypti
 
 3. Data Integrity – This is guarantee that no one can modify information being sent from sender to receiver.
 
-To be continued...
-
 **SSH Features**
 
-**SSH Encryption Architecture**
+1. **Secure Remote Logins** - SSH allows secure remote login to the server by using an encrypted connection by using a ssh client program that authenticates you to the remote computer’s SSH server. This means your username and password are encrypted locally first and then they are transmitted. If authenticated successfully, any packets which follow are encrypted using the SSH protocol.
 
-**Connecting to a SSH server on Windows with user/pass authentication**
+2. **Secure File Transfer** – Using SSH, a file that may contain sensitive information can be transmitted securely between machines with scp command.
+
+3. **Remotely execute commands** - Using the SSH connection, you can execute commands externally on the remote server computer.
+
+4. **Port Forwarding** - SSH can secure other unsecure TCP/IP protocols such as FTP, telnet using port forwarding techniques. For example one can use telnet protocol over SSH connection.
+
+To be continued...
+
+**SSH Encryption **
 
 **Connecting to a SSH server on Unix/Linux with user/pass authentication**
 
+**Connecting to a SSH server on Unix/Linux with key authenticationg**
+
+**Connecting to a SSH server on Windows with user/pass authentication**
+
 **Connecting to a SSH server on Windows with key authentication**
 
-**Connecting to a SSH server on Unix/Linux with key authentication**
+**Potential Attacks byt hackers**
 
 ---
 
