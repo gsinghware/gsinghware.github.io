@@ -20,6 +20,20 @@ The SSH Protocol mainly consists of three components. **Authentication, Encrypti
 
 3. Data Integrity – This is guarantee that no one can modify information being sent from sender to receiver.
 
+To be continued...
+
+**SSH Features**
+
+**SSH Encryption Architecture**
+
+**Connecting to a SSH server on Windows with user/pass authentication**
+
+**Connecting to a SSH server on Unix/Linux with user/pass authentication**
+
+**Connecting to a SSH server on Windows with key authentication**
+
+**Connecting to a SSH server on Unix/Linux with key authentication**
+
 ---
 
 If you have any questions, follow and ping me on Twitter - I'm [@_g_singh_][twitter].
