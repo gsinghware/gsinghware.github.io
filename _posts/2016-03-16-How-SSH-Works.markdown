@@ -40,17 +40,42 @@ After the connection is established, both the client and server agree on public 
 
 After the session-key is established, the user authentication will begin. The user authentication can be done using passwords or using SSH key pairs as metioned earlier in the SSH features section. 
 
-If you use password authenctication, the server will prompt the client for the password of the account they try to access. The password is encrypted by the client and sent, and once recieved by the server decrypts the password and verifies it. If the password is correct, then the client is given access to the account.
+If you use password authenctication, the server will prompt the client for the password of the account they try to access. The password is encrypted by the client and sent. Once recieved by the server, it decrypts the password and verifies it. If the password is correct, then the client is given access to the account.
+
+
+**Connecting to a SSH server from Mac OS X or Unix or Linux with username and password authentication**
+
+Mac OS X and Linux both come with an SSH client built in. For this tutorial, I'll be connecting to a virtual machine using SSH from my computer. I have intalled Ubuntu on a Virtual Machine and I'm using port forwarding to be able to SSH into the VM. To do this, Go into you Virtual Machines Settings and Open the Network tab. You should a button that says "Port Forwarding". See image below
+
+![alt text](https://3.bp.blogspot.com/-xcAhcN-WVN8/VurvAZCIhPI/AAAAAAAACcU/oiYxZ0cmv3koWoerMSJRibOrRTXDegdbQ/s320/VM-Port-Forwarding.png "VM Port Forwarding")
+
+Click the Add new port icon and enter the following information:
+
+![alt text](https://3.bp.blogspot.com/-Erj1eMxs5mE/VurvAawyHOI/AAAAAAAACcY/7NqADMow6T8TdC2fv567hFGBjI1sx-QYg/s320/VM-SSH-.png "VM SSH")
+
+And that's all you have to do to SSH into the Virtual Machine.
+
+Also install the OpenSSH-Server using the following command on your Virtual Machine:
+
+> sudo apt-get install openssh-server
+
+Once you have installed the server on the virutal machine, follow these steps: 
+ 
+1. Get the IP address of your virtual machine server. Type the following in your terminal
+
+> ifconfig
+
+You should get the following screen:
+
+![alt text](https://2.bp.blogspot.com/-UUJwkjxwM-s/VurzA327KjI/AAAAAAAACck/dc9wjxQsmisCmtZ38GZfNJDzyrervLRjw/s320/ifconfig.png "ifconfig")
 
 To be continued...
 
-**Connecting to a SSH server on Unix/Linux with user/pass authentication**
+2. Type the following command:
+
+> 
 
 **Connecting to a SSH server on Unix/Linux with key authenticationg**
-
-**Connecting to a SSH server on Windows with user/pass authentication**
-
-**Connecting to a SSH server on Windows with key authentication**
 
 **Potential Attacks by Hackers**
 
